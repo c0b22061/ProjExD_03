@@ -99,20 +99,18 @@ class Beam:
         screen.blit(self.img, self.rct)        
 
 
-
 class Score:
     def __init__(self):
-        self.font = pg.font.SysFont("hgp",30)
-        co = (0,0,255)
-        score=0
-        self.img = self.font.render("表示させる文字列",0,co)
-        self.rct = pg.display.get_rect()
-        self.rct.center=(100,50)
-        screen=
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体",30)
+        self.co = (0,0,255)
+        self.score=0
+        self.text = self.font.render(f"スコア {self.score}",True,self.co)
+        self.x=100
+        self.y=600
     
-    def update(self):
-        
-        screen.blit(kazu,[100,50])
+    def update(self,score1,screen):
+        self.text = self.font.render(f"Score: {score1}", True, self.co)
+        screen.blit(self.text,(self.x,self.y))
         
     
 class Bomb:
@@ -136,7 +134,7 @@ class Bomb:
         self.vx = random.choice(__class__.directions)
         self.vy = random.choice(__class__.directions)
 
-    def update(self, screen: pg.Surface):
+    def update(self,screen: pg.Surface):
         """
         爆弾を速度ベクトルself.vx, self.vyに基づき移動させる
         引数 screen：画面Surface
@@ -151,12 +149,12 @@ class Bomb:
 
 
 def main():
-    score=0
+    score1=0
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
     bird = Bird(3, (900, 400))
-    Score()
+    score=Score()
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
 
@@ -187,11 +185,10 @@ def main():
                     beam = None
                     bombs[i] = None
                     bird.change_img(6, screen)
+                    score1 +=1
                     pg.display.update()
-                    score +=1
-                    Score.update(screen)
-        bombs = [bomb for bomb in bombs if bomb is not None]                        
-
+        bombs = [bomb for bomb in bombs if bomb is not None]
+        score.update(score1,screen)                        
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         for bomb in bombs:
