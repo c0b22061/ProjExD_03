@@ -99,6 +99,22 @@ class Beam:
         screen.blit(self.img, self.rct)        
 
 
+
+class Score:
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp",30)
+        co = (0,0,255)
+        score=0
+        self.img = self.font.render("表示させる文字列",0,co)
+        self.rct = pg.display.get_rect()
+        self.rct.center=(100,50)
+        screen=
+    
+    def update(self):
+        
+        screen.blit(kazu,[100,50])
+        
+    
 class Bomb:
     """
     爆弾に関するクラス
@@ -135,10 +151,12 @@ class Bomb:
 
 
 def main():
+    score=0
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
     bird = Bird(3, (900, 400))
+    Score()
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
 
@@ -170,6 +188,8 @@ def main():
                     bombs[i] = None
                     bird.change_img(6, screen)
                     pg.display.update()
+                    score +=1
+                    Score.update(screen)
         bombs = [bomb for bomb in bombs if bomb is not None]                        
 
         key_lst = pg.key.get_pressed()
