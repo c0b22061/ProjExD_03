@@ -104,12 +104,12 @@ class Score:
         self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体",30)
         self.co = (0,0,255)
         self.score=0
-        self.text = self.font.render(f"スコア {self.score}",0,self.co)
+        self.text = self.font.render(f"スコア {self.score}",True,self.co)
         self.x=100
         self.y=600
     
-    def update(self,screen):
-        self.text = self.font.render(f"Score: {self.score}", True, self.color)
+    def update(self,score1,screen):
+        self.text = self.font.render(f"Score: {score1}", True, self.co)
         screen.blit(self.text,(self.x,self.y))
         
     
@@ -134,7 +134,7 @@ class Bomb:
         self.vx = random.choice(__class__.directions)
         self.vy = random.choice(__class__.directions)
 
-    def update(self, screen: pg.Surface):
+    def update(self,screen: pg.Surface):
         """
         爆弾を速度ベクトルself.vx, self.vyに基づき移動させる
         引数 screen：画面Surface
@@ -154,9 +154,10 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
     bird = Bird(3, (900, 400))
-    Score()
+    score=Score()
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
+    score1=0
 
     clock = pg.time.Clock()
     tmr = 0
@@ -185,11 +186,10 @@ def main():
                     beam = None
                     bombs[i] = None
                     bird.change_img(6, screen)
-                    score +=1
+                    score1 +=1
                     pg.display.update()
         bombs = [bomb for bomb in bombs if bomb is not None]
-        Score.update(screen)                        
-
+        score.update(score1,screen)                        
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         for bomb in bombs:
